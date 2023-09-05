@@ -55,3 +55,12 @@ resource "aws_route_table_association" "rpri" {
 }
 
 
+####################################################### NAT Instance ###################################
+
+resource "aws_instance" "nat1" {
+  ami = "ami-06783fe27b19018a0"
+  instance_type = "t3.micro"
+  subnet_id = aws_subnet.subnets1.*.id[0]
+  tags = var.nat_tags
+
+}
