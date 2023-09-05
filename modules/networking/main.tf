@@ -35,5 +35,23 @@ resource "aws_route_table_association" "rpub" {
    route_table_id = aws_route_table.public1.id
 }
 
+# Create Route Table For Private_subnets
+
+resource "aws_route_table" "private1" {
+   vpc_id = aws_vpc.vpc1.id
+}
+############# Private_Subnets   #########
+resource "aws_subnet" "subnets2" {
+   count = var.subnet_count
+   vpc_id = aws_vpc.vpc1.id
+   cidr_block = var.pri_cidrs[count.index]
+       }
+##############  Associate Private Subnets with Private Route Table ###################
+
+resource "aws_route_table_association" "rpri" {
+   count = var.subnet_count
+   subnet_id = aws_subnet.subnets2.*.id[count.index]
+   route_table_id = aws_route_table.private1.id
+}
 
 
