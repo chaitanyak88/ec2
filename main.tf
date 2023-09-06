@@ -5,3 +5,9 @@ module "Tf_vpc" {
    Location = "HYD"  
              }
 } 
+
+
+module "alb" {
+  source = "./modules/alb"
+  vpc_id = module.Tf_vpc.vpc_id
+}
