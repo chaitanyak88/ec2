@@ -31,7 +31,7 @@ module "ec2_instance" {
             description="allow 80 everywhere"
         }
     }
-
+    
 }
 
 module "alb" {
@@ -44,6 +44,23 @@ module "alb" {
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
       description = "allow 80 everywhere"
+    }
+  }
+  instance_ids = module.ec2_instance.instance_ids
+}
+
+# Create RDS
+module "jhc_rds" {
+  source  = "./modules/rds"
+  sub_ids = module.Tf_vpc.pri_sub_ids
+  vpc_id  = module.Tf_vpc.vpc_id
+  rds_ingress_rules = {
+    "app1" = {
+      port            = 5432
+      protocol        = "tcp"
+      cidr_blocks     = []
+      description     = "allow ssh within organization"
+      security_groups = [module.ec2_instance.security_group_id]
     }
   }
 }
