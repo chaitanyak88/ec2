@@ -14,6 +14,24 @@ module "ec2_instance" {
   ami = "ami-0c147c2e2b026f094"
   key_name = "sharath"
   subnet_ids = module.Tf_vpc.pub_sub_ids
+  web_ingress_rules={
+        "22"={
+            port=22
+            protocol="tcp"
+            #generally we provide the ip address/security group of the server which connects to this 
+            cidr_blocks=["0.0.0.0/0"]
+            description="allow ssh"
+
+         }
+         "80"={
+             port=80
+             protocol="tcp"
+            #generally we provide the ip address/security group of the server which connects to this 
+            cidr_blocks=["0.0.0.0/0"]
+            description="allow 80 everywhere"
+        }
+    }
+
 }
 
 module "alb" {

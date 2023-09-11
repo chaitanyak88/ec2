@@ -13,3 +13,13 @@ variable "subnet_ids" {}
 variable "key_name" {
 }
 variable "vpc_id" {}
+##################################################################################################
+
+variable "web_ingress_rules" {
+    type=map(object({
+        port=number
+        protocol=string
+        cidr_blocks=list(string)
+        description=string
+    }))
+}
