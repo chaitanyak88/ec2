@@ -7,6 +7,15 @@ module "Tf_vpc" {
 } 
 
 
+module "ec2_instance" {
+  # Name = "EC2-$[count.index + 1]"
+  source = "./modules/ec2"
+  vpc_id = module.Tf_vpc.vpc_id
+  ami = "ami-0c147c2e2b026f094"
+  key_name = "sharath"
+  subnet_ids = module.Tf_vpc.pub_sub_ids
+}
+
 module "alb" {
   source = "./modules/alb"
   vpc_id = module.Tf_vpc.vpc_id
